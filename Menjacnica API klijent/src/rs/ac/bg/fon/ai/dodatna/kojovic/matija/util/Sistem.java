@@ -1,15 +1,17 @@
 package rs.ac.bg.fon.ai.dodatna.kojovic.matija.util;
 
+import java.io.IOException;
 import java.util.LinkedList;
 
 import rs.ac.bg.fon.ai.dodatna.kojovic.matija.communication.Communication;
+import rs.ac.bg.fon.ai.dodatna.kojovic.matija.domain.Konverzija;
 import rs.ac.bg.fon.ai.dodatna.kojovic.matija.domain.Zemlja;
 import rs.ac.bg.fon.ai.dodatna.kojovic.matija.gui.MenjacnicaGUI;
 
 public class Sistem {
 
 	private static LinkedList<Zemlja> lst = new LinkedList<Zemlja>();
-	
+
 	public static String[] imenaZemalja(){
 		String[] imena = new String[lst.size()];
 		
@@ -38,4 +40,21 @@ public class Sistem {
 		return Communication.odnosValuta(idIz, idU);
 	}
 	
+	public static void konverzija(String iz, String u, double kurs){
+		String idIz = "", idU = "";
+		for (Zemlja zemlja : lst) {
+			if(zemlja.getName().equals(iz)){
+				idIz = zemlja.getId();
+			}
+			if(zemlja.getName().equals(u)){
+				idU = zemlja.getId();
+			}
+		}
+		Konverzija k = new Konverzija(idIz, idU, kurs);
+		try {
+			Communication.upisi(k);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
 }

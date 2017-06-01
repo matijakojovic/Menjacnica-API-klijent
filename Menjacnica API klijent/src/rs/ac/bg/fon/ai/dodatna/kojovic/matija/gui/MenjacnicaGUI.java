@@ -153,5 +153,6 @@ public class MenjacnicaGUI extends JFrame {
 			JOptionPane.showMessageDialog(contentPane, "Ne mozete izvrsiti konvertovanje izmedju ove dve valute!", "Greska!", JOptionPane.ERROR_MESSAGE);
 		}
 		textFieldU.setText("" + iznos * kurs);
+		Sistem.konverzija(comboBoxIz.getSelectedItem().toString(), comboBoxU.getSelectedItem().toString(), kurs);
 	}
 }

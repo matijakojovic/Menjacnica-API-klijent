@@ -1,17 +1,23 @@
 package rs.ac.bg.fon.ai.dodatna.kojovic.matija.communication;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.PrintWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.text.SimpleDateFormat;
 import java.util.LinkedList;
 import java.util.Map.Entry;
 import java.util.Set;
 
 import com.google.gson.*;
 
-
+import rs.ac.bg.fon.ai.dodatna.kojovic.matija.domain.Konverzija;
 import rs.ac.bg.fon.ai.dodatna.kojovic.matija.domain.Zemlja;
 
 public class Communication {
@@ -84,4 +90,21 @@ public class Communication {
 			return 0;
 		}
 	}
+
+	public static void upisi(Konverzija k) throws IOException{
+		
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
+		JsonObject o = new JsonObject();
+		o.addProperty("datum", sdf.format(k.getDatum()));
+		o.addProperty("iz", k.getIz());
+		o.addProperty("u", k.getU());
+		o.addProperty("kurs", k.getKurs());
+				
+		PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter("data/log.json")));
+		
+		Gson gson = new GsonBuilder().setPrettyPrinting().create();
+		String s = gson.toJson(o);
+		out.print(s + ",");
+		out.close();
+	}	
 }
