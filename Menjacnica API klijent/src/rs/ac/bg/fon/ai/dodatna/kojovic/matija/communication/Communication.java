@@ -61,7 +61,27 @@ public class Communication {
 		 }
 		 in.close();
 		 return response.toString();
-	
 	}
 	
+	public static double odnosValuta(String iz, String u){
+		
+		String url = "http://free.currencyconverterapi.com/api/v3/convert?q=" + iz + "_" + u;
+		try {
+			String out = sendGet(url);
+			Gson gson = new GsonBuilder().create();
+			
+			JsonObject o = gson.fromJson(out, JsonObject.class);
+			int i = (((JsonObject) o.get("query")).get("count")).getAsInt();
+		
+			if(i == 0){
+				return 0;
+			}
+			JsonObject jsonKurs = (JsonObject) (((JsonObject) o.get("results")).get(iz + "_" + u));
+			double kurs = jsonKurs.get("val").getAsDouble();
+			
+			return kurs;
+		} catch (IOException e) {
+			return 0;
+		}
+	}
 }

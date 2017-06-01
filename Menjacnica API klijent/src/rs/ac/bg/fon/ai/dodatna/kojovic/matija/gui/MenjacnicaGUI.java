@@ -1,12 +1,15 @@
 package rs.ac.bg.fon.ai.dodatna.kojovic.matija.gui;
 
 import java.awt.EventQueue;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
@@ -131,8 +134,24 @@ public class MenjacnicaGUI extends JFrame {
 	private JButton getBtnKonvertuj() {
 		if (btnKonvertuj == null) {
 			btnKonvertuj = new JButton("Konvertuj");
+			btnKonvertuj.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					izracunajKurs();			
+				}
+			});
 			btnKonvertuj.setBounds(130, 206, 97, 25);
 		}
 		return btnKonvertuj;
+	}
+	private void izracunajKurs() {
+		double iznos = Double.parseDouble(textFieldIz.getText());
+		if(iznos <= 0){
+			JOptionPane.showMessageDialog(contentPane, "Ne mozete konvertovati negativan iznos!", "Greska!", JOptionPane.ERROR_MESSAGE);
+		}
+		double kurs = Sistem.kurs(comboBoxIz.getSelectedItem().toString(), comboBoxU.getSelectedItem().toString());
+		if(kurs <= 0){
+			JOptionPane.showMessageDialog(contentPane, "Ne mozete izvrsiti konvertovanje izmedju ove dve valute!", "Greska!", JOptionPane.ERROR_MESSAGE);
+		}
+		textFieldU.setText("" + iznos * kurs);
 	}
 }
